@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WareHouseManagment.Dto;
 using WareHouseManagment.Interfaces;
@@ -9,7 +10,7 @@ namespace WareHouseManagment.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class WarehouseLocationController:Controller
+    public class WarehouseLocationController: ControllerBase
     {
         private readonly IWarehouseLocationRepository _warehouseLocationRepository;
         private readonly IMapper _mapper;
@@ -19,6 +20,7 @@ namespace WareHouseManagment.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<WarehouseLocation>))]
         public IActionResult GetWarehouseLocations()
         {
@@ -28,6 +30,7 @@ namespace WareHouseManagment.Controllers
             return Ok(warehouseLocations);
         }
         [HttpGet("WarehouseLocationId")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(200, Type = typeof(WarehouseLocation))]
         [ProducesResponseType(400)]
         public IActionResult GetCategory(int categoryId)
@@ -42,6 +45,7 @@ namespace WareHouseManagment.Controllers
             return Ok(WarehouseLocation);
         }
         [HttpGet("WarehouseLocationName")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public IActionResult GetCategoryS(string name)
@@ -57,6 +61,7 @@ namespace WareHouseManagment.Controllers
             return Ok(warehouseLocations);
         }
         [HttpGet("WarehouseLocationByWarehosue")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public IActionResult GetWarehouseLocationByWarehouse(int id)
@@ -69,6 +74,7 @@ namespace WareHouseManagment.Controllers
             return Ok(w);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateWarehouseLocation([FromBody] WarehouseLocationDto warehouseLocationDto)
@@ -92,6 +98,7 @@ namespace WareHouseManagment.Controllers
             return Ok("Successfully created");
         }
         [HttpPut("{productId}")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -122,6 +129,7 @@ namespace WareHouseManagment.Controllers
         }
 
         [HttpDelete("{WarehouseLocationId}")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

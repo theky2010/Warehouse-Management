@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WareHouseManagment.Dto;
 using WareHouseManagment.Interfaces;
@@ -10,7 +11,7 @@ namespace WareHouseManagment.Controllers
     [ApiController]
     [Route("api/[controller]")]
 
-    public class ProductController : Controller
+    public class ProductController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
@@ -20,6 +21,7 @@ namespace WareHouseManagment.Controllers
             _mapper = mapper;
         }
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Product>))]
         public IActionResult GetProducts()
         {
@@ -31,6 +33,7 @@ namespace WareHouseManagment.Controllers
             return Ok(products);
         }
         [HttpGet("ProductId")]
+        [Authorize]
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(400)]
         public IActionResult GetProduct(int productId)
@@ -46,6 +49,7 @@ namespace WareHouseManagment.Controllers
             return Ok(product);
         }
         [HttpGet("ProductName")]
+        [Authorize]
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(400)]
         public IActionResult GetProduct(string productName)
@@ -62,6 +66,7 @@ namespace WareHouseManagment.Controllers
         }
 
         [HttpGet("ProductByCategory")]
+        [Authorize]
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(400)]
         public IActionResult GetProductByCategory(int categoryId)
@@ -74,6 +79,7 @@ namespace WareHouseManagment.Controllers
             return Ok(products);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateProduct([FromBody] ProductDto productDto)
@@ -106,6 +112,7 @@ namespace WareHouseManagment.Controllers
             return Ok("Successfully created");
         }
         [HttpPut("{productId}")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -136,6 +143,7 @@ namespace WareHouseManagment.Controllers
         }
 
         [HttpDelete("{productId}")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

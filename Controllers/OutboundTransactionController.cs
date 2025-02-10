@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WareHouseManagment.Dto;
 using WareHouseManagment.Interfaces;
@@ -9,7 +10,7 @@ namespace WareHouseManagment.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class OutboundTransactionController:Controller
+    public class OutboundTransactionController: ControllerBase
     {
         private readonly IOutboundTransactionRepository _outboundTransactionRepository;
         private readonly IMapper _mapper;
@@ -19,6 +20,7 @@ namespace WareHouseManagment.Controllers
             _mapper = mapper;
         }
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<OutboundTransaction>))]
         public IActionResult GetOutboundTransactions()
         {
@@ -29,6 +31,7 @@ namespace WareHouseManagment.Controllers
         }
 
         [HttpGet("OutbTransactionId")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(200, Type = typeof(OutboundTransaction))]
         [ProducesResponseType(400)]
         public IActionResult GetOutboundTransaction(int id)
@@ -42,6 +45,7 @@ namespace WareHouseManagment.Controllers
         }
 
         [HttpGet("OutbTransactionByCustomer")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(200, Type = typeof(OutboundTransaction))]
         [ProducesResponseType(400)]
         public IActionResult GetOutboundTransactiobByCustomer(int id)
@@ -54,6 +58,7 @@ namespace WareHouseManagment.Controllers
             return Ok(i);
         }
         [HttpGet("OutbTransactionByWarehouse")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(200,Type = typeof(OutboundTransaction))]
         [ProducesResponseType(400)]
         public IActionResult GetOutbTransactionByWarehouse(int id)
@@ -66,6 +71,7 @@ namespace WareHouseManagment.Controllers
             return Ok(i);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateOutbound([FromBody] OutboundTransactionDto outboundDto)
@@ -89,6 +95,7 @@ namespace WareHouseManagment.Controllers
             return Ok("Successfully created");
         }
         [HttpPut("{OutboundTransactionId}")]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -118,6 +125,7 @@ namespace WareHouseManagment.Controllers
             return NoContent();
         }
         [HttpDelete("{OutboundTransactiobId}")]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

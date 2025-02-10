@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WareHouseManagment.Dto;
 using WareHouseManagment.Interfaces;
@@ -9,7 +10,7 @@ namespace WareHouseManagment.Controllers
 {
     [ApiController]
     [Route("api/[Controller]")]
-    public class CustomerController:Controller
+    public class CustomerController:ControllerBase
     {
         private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
@@ -20,6 +21,7 @@ namespace WareHouseManagment.Controllers
             _mapper = mapper;
         }
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(200,Type = typeof(IEnumerable<Customer>))]
         public IActionResult GetCustomers()
         {
@@ -29,6 +31,7 @@ namespace WareHouseManagment.Controllers
             return Ok(customers);
         }
         [HttpGet("CustomerId")]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public IActionResult GetCustomer(int customerId)
@@ -41,6 +44,7 @@ namespace WareHouseManagment.Controllers
             return Ok(customer);
         }
         [HttpGet("customerName")]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public IActionResult GetCategoryS(string customerName)
@@ -56,6 +60,7 @@ namespace WareHouseManagment.Controllers
             return Ok(customer);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateProduct([FromBody] CustomerDto customerDto)
@@ -88,6 +93,7 @@ namespace WareHouseManagment.Controllers
             return Ok("Successfully created");
         }
         [HttpPut("{customerId}")]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -118,6 +124,7 @@ namespace WareHouseManagment.Controllers
         }
 
         [HttpDelete("{customerId}")]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
