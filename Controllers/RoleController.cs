@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WareHouseManagment.Dto;
 using WareHouseManagment.Interfaces;
@@ -9,7 +10,7 @@ namespace WareHouseManagment.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class RoleController:Controller
+    public class RoleController: ControllerBase
     {
         private readonly IRoleRepository _roleRepository;
         private readonly IMapper _mapper;
@@ -19,6 +20,7 @@ namespace WareHouseManagment.Controllers
             _mapper = mapper;
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Role>))]
         public IActionResult GetRoles()
         {
@@ -30,6 +32,7 @@ namespace WareHouseManagment.Controllers
             return Ok(roles);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateProduct([FromBody] RoleDto roleDto)
@@ -53,6 +56,7 @@ namespace WareHouseManagment.Controllers
             return Ok("Successfully created");
         }
         [HttpPut("{roleId}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -79,6 +83,7 @@ namespace WareHouseManagment.Controllers
             return NoContent();
         }
         [HttpDelete("{roleId}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

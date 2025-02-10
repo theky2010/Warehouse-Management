@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WareHouseManagment.Dto;
 using WareHouseManagment.Interfaces;
@@ -9,7 +10,7 @@ namespace WareHouseManagment.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class OutboundTransactionDetailController:Controller
+    public class OutboundTransactionDetailController: ControllerBase
     {
         private readonly IOutboundTransactionDetailRepository _outboundTransactionDetailRepository;
         private readonly IMapper _mapper;
@@ -19,6 +20,7 @@ namespace WareHouseManagment.Controllers
             _mapper = mapper;
         }
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<OutboundTransactionDetail>))]
         public IActionResult GetOutboundTransactionDetails()
         {
@@ -29,6 +31,7 @@ namespace WareHouseManagment.Controllers
             return Ok(i);
         }
         [HttpGet("OutbTDetailId")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public IActionResult GetOutbTDetail(int id)
@@ -41,6 +44,7 @@ namespace WareHouseManagment.Controllers
             return Ok(i);
         }
         [HttpGet("OutbTDetailByOutbound")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public IActionResult GetOutbTDetailByOutbound(int id)
@@ -53,6 +57,7 @@ namespace WareHouseManagment.Controllers
             return Ok(i);
         }
         [HttpGet("OutbTDetailByWarehouse")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public IActionResult GetOutbTDetailByWarehouse(int id)
@@ -65,6 +70,7 @@ namespace WareHouseManagment.Controllers
             return Ok(i);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateOutboundTransactionDetail([FromBody] OutboundTransactionDetailDto outboundDto)
@@ -88,6 +94,7 @@ namespace WareHouseManagment.Controllers
             return Ok("Successfully created");
         }
         [HttpPut("{productId}")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -118,6 +125,7 @@ namespace WareHouseManagment.Controllers
         }
 
         [HttpDelete("{OutboundDetailId}")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

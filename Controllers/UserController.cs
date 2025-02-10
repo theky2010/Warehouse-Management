@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WareHouseManagment.Dto;
 using WareHouseManagment.Interfaces;
@@ -9,7 +10,7 @@ namespace WareHouseManagment.Controllers
 {
     [ApiController]
     [Route("api/[Controller]")]
-    public class UserController :Controller
+    public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
@@ -20,6 +21,7 @@ namespace WareHouseManagment.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<User>))]
         public IActionResult GetUsers()
         {
@@ -29,6 +31,8 @@ namespace WareHouseManagment.Controllers
             return Ok(users);
         }
         [HttpGet("userId")]
+        [Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles ="Admin")]
         [ProducesResponseType(200, Type = typeof(User))]
         [ProducesResponseType(400)]
         public IActionResult GetUser(int id)
@@ -43,6 +47,8 @@ namespace WareHouseManagment.Controllers
             return Ok(user);
         }
         [HttpGet("UserFulLName")]
+        [Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public IActionResult GetUserName(string name)
@@ -58,6 +64,7 @@ namespace WareHouseManagment.Controllers
             return Ok(users);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateUser([FromBody] UserDto userDto)
@@ -89,6 +96,8 @@ namespace WareHouseManagment.Controllers
             return Ok("Successfully created");
         }
         [HttpPut("{userId}")]
+        [Authorize(Roles = "Admin,Manager")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -118,6 +127,7 @@ namespace WareHouseManagment.Controllers
             return NoContent();
         }
         [HttpDelete("{userId}")]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

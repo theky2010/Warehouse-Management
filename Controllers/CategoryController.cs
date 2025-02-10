@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WareHouseManagment.Dto;
 using WareHouseManagment.Interfaces;
@@ -9,7 +10,7 @@ namespace WareHouseManagment.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CategoryController: Controller
+    public class CategoryController: ControllerBase
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
@@ -20,6 +21,7 @@ namespace WareHouseManagment.Controllers
         }
      
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(200,Type = typeof(IEnumerable<Category>))]
         public IActionResult GetCategories()
         {
@@ -29,6 +31,7 @@ namespace WareHouseManagment.Controllers
             return Ok(categories);
         }
         [HttpGet("categoryId")]
+        [Authorize]
         [ProducesResponseType(200,Type = typeof(Category))]
         [ProducesResponseType(400)]
         public IActionResult GetCategory(int categoryId)
@@ -43,6 +46,7 @@ namespace WareHouseManagment.Controllers
             return Ok(category);
         }
         [HttpGet("categoryName")]
+        [Authorize]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public IActionResult GetCategoryS(string categoryName)
@@ -58,6 +62,7 @@ namespace WareHouseManagment.Controllers
             return Ok(categoryS);
         }
         [HttpPost]
+        [Authorize(Roles ="Admin,Manager")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateCategory([FromBody] CategoryDto categoryDto)
@@ -91,6 +96,7 @@ namespace WareHouseManagment.Controllers
             return Ok("Successfully created");
         }
         [HttpPut("{categoryId}")]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -120,6 +126,7 @@ namespace WareHouseManagment.Controllers
             return NoContent();
         }
         [HttpDelete("{categoryId}")]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
