@@ -10,7 +10,7 @@ using WareHouseManagment.Models;
 namespace WareHouseManagment.Controllers
 {
     [ApiController]
-    [Route("api/Users")]
+    [Route("api/[Controller]")]
     public class UserLoginController:ControllerBase
     {
         private readonly DataContext _context;
@@ -51,17 +51,25 @@ namespace WareHouseManagment.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
 
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, username),
+            };
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                new Claim(ClaimTypes.Name, username),
-                new Claim(ClaimTypes.Role, string.Join(",", roles)) 
-            }),
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddHours(1),
                 Issuer = _configuration["Jwt:Issuer"],
                 Audience = _configuration["Jwt:Audience"],
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);

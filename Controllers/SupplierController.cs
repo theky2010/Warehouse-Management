@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WareHouseManagment.Dto;
 using WareHouseManagment.Interfaces;
@@ -9,7 +10,7 @@ namespace WareHouseManagment.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class SupplierController:Controller
+    public class SupplierController: ControllerBase
     {
         private readonly ISupplierRepository _supplierRepository;
         private readonly IMapper _mapper;
@@ -20,6 +21,7 @@ namespace WareHouseManagment.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Supplier>))]
         public IActionResult GetProducts()
         {
@@ -31,6 +33,7 @@ namespace WareHouseManagment.Controllers
             return Ok(suppliers);
         }
         [HttpGet("SupplierId")]
+        [Authorize]
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(400)]
         public IActionResult GetProduct(int supplierId)
@@ -46,6 +49,7 @@ namespace WareHouseManagment.Controllers
             return Ok(supplier);
         }
         [HttpGet("SupplierName")]
+        [Authorize]
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(400)]
         public IActionResult GetProduct(string supplierName)
@@ -61,6 +65,7 @@ namespace WareHouseManagment.Controllers
             return Ok(supplier);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateProduct([FromBody] SupplierDto supplierDto)
@@ -93,6 +98,7 @@ namespace WareHouseManagment.Controllers
             return Ok("Successfully created");
         }
         [HttpPut("{supplierId}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -122,6 +128,7 @@ namespace WareHouseManagment.Controllers
         }
 
         [HttpDelete("{supplierId}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

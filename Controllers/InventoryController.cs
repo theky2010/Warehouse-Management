@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WareHouseManagment.Dto;
 using WareHouseManagment.Interfaces;
@@ -9,7 +10,7 @@ namespace WareHouseManagment.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class InventoryController:Controller
+    public class InventoryController: ControllerBase
     {
         private readonly IInventoryRepository   _inventoryRepository;
         private readonly IMapper _mapper;
@@ -20,6 +21,7 @@ namespace WareHouseManagment.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Inventory>))]
         public IActionResult GetInventories()
         {
@@ -32,6 +34,7 @@ namespace WareHouseManagment.Controllers
         }
 
         [HttpGet("InventoryId")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(400)]
         public IActionResult GetProduct(int id)
@@ -48,6 +51,7 @@ namespace WareHouseManagment.Controllers
         }
 
         [HttpGet("InventoryByProduct")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(400)]
         public IActionResult GetInventoryByProduct(int id)
@@ -61,6 +65,7 @@ namespace WareHouseManagment.Controllers
         }
 
         [HttpGet("InventoryByLocation")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(400)]
         public IActionResult GetInventoryByLocation(int id)
@@ -73,6 +78,7 @@ namespace WareHouseManagment.Controllers
             return Ok(i);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateProduct([FromBody] InventoryDto inventoryDto)
@@ -96,6 +102,7 @@ namespace WareHouseManagment.Controllers
             return Ok("Successfully created");
         }
         [HttpPut("{inventoryId}")]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -125,6 +132,7 @@ namespace WareHouseManagment.Controllers
             return NoContent();
         }
         [HttpDelete("{inventoryId}")]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

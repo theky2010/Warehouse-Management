@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WareHouseManagment.Dto;
 using WareHouseManagment.Interfaces;
@@ -9,7 +10,7 @@ namespace WareHouseManagment.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class InboundTransactionDetailController:Controller
+    public class InboundTransactionDetailController: ControllerBase
     {
         private readonly IInboundTransactionDetailRepository _inboundTransactionDetailRepository;
         private readonly IMapper _mapper;
@@ -20,6 +21,7 @@ namespace WareHouseManagment.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<InboundTransactionDetail>))]
         public IActionResult GetInboundTransactionDetailRepositories()
         {
@@ -30,6 +32,7 @@ namespace WareHouseManagment.Controllers
             return Ok(i);
         }
         [HttpGet("InbTDetailByInbound")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public IActionResult GetInbTDetailByInbound(int id)
@@ -42,6 +45,7 @@ namespace WareHouseManagment.Controllers
             return Ok(i);
         }
         [HttpGet("InbTDetailByProduct")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public IActionResult GetInbTDetailByProduct(int id)
@@ -54,6 +58,7 @@ namespace WareHouseManagment.Controllers
             return Ok(i);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateProduct([FromBody] InboundTransactionDetailDto itDetailDto)
@@ -77,6 +82,7 @@ namespace WareHouseManagment.Controllers
             return Ok("Successfully created");
         }
         [HttpPut("{InbTDetailId}")]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -107,6 +113,7 @@ namespace WareHouseManagment.Controllers
         }
 
         [HttpDelete("{InbTDetailId}")]
+        [Authorize(Roles = "Admin,Manager")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
