@@ -14,9 +14,10 @@ namespace WareHouseManagment.Controllers
     {
         private readonly IWarehouseLocationRepository _warehouseLocationRepository;
         private readonly IMapper _mapper;
-        public WarehouseLocationController(IWarehouseLocationRepository warehouseLocationRepository)
+        public WarehouseLocationController(IWarehouseLocationRepository warehouseLocationRepository, IMapper mapper)
         {
             _warehouseLocationRepository = warehouseLocationRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
