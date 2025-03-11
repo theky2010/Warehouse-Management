@@ -14,6 +14,10 @@ namespace WareHouseManagment.Helper
             CreateMap<ProductDto, Product>();
             CreateMap<User, UserDto>();
             CreateMap<UserDto, User>();
+            CreateMap<Warehouse, WarehouseDto>();
+            CreateMap<WarehouseDto, Warehouse>();
+            CreateMap<WarehouseLocation, WarehouseLocationDto>();
+            CreateMap<WarehouseLocationDto, WarehouseLocation>();
             CreateMap<Role, RoleDto>();
             CreateMap<RoleDto, Role>();
             CreateMap<UserRole, UserRoleDto>();
